@@ -227,7 +227,7 @@ variable "routing" {
     publish_internet_endpoints  = optional(bool, false)
     publish_microsoft_endpoints = optional(bool, false)
   })
-  default     = null
+  default     = {} #null
   description = <<-EOT
  - `choice` - (Optional) Specifies the kind of network routing opted by the user. Possible values are `InternetRouting` and `MicrosoftRouting`. Defaults to `MicrosoftRouting`.
  - `publish_internet_endpoints` - (Optional) Should internet routing storage endpoints be published? Defaults to `false`.
