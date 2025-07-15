@@ -148,4 +148,9 @@ variable "is_hns_enabled" {
   type        = bool
   default     = null
   description = "(Optional) Is Hierarchical Namespace enabled? This can be used with Azure Data Lake Storage Gen 2 ([see here for more information](https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-quickstart-create-account/)). Changing this forces a new resource to be created."
+
+  validation {
+    condition     = var.is_hns_enabled == true ? (var.blob_properties != null ? var.blob_properties.versioning_enabled == false : true) : true
+    error_message = "When is_hns_enabled is set to true, blob_properties.versioning_enabled must be set to false. Azure Data Lake Storage Gen 2 (HNS) is not compatible with blob versioning."
+  }
 }
