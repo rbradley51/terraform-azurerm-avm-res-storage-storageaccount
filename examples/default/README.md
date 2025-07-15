@@ -126,7 +126,9 @@ module "this" {
     directory_type                 = "AADKERB"
   }
   blob_properties = {
-    versioning_enabled = true
+    container_delete_retention_policy = {}
+    delete_retention_policy           = {}
+    versioning_enabled                = true
   }
   containers = {
     blob_container0 = {

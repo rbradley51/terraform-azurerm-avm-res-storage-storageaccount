@@ -116,8 +116,10 @@ module "this" {
   account_replication_type = "GRS"
   account_tier             = "Standard"
   blob_properties = {
-    versioning_enabled       = true
-    last_access_time_enabled = true
+    container_delete_retention_policy = {}
+    delete_retention_policy           = {}
+    versioning_enabled                = true
+    last_access_time_enabled          = true
 
   }
   containers = {
