@@ -37,6 +37,7 @@ variable "blob_properties" {
   })
   default     = null
   description = <<-EOT
+
  - `change_feed_enabled` - (Optional) Is the blob service properties for change feed events enabled? Default to `false`.
  - `change_feed_retention_in_days` - (Optional) The duration of change feed events retention in days. The possible values are between 1 and 146000 days (400 years). Setting this to null (or omit this in the configuration file) indicates an infinite retention of the change feed.
  - `default_service_version` - (Optional) The API Version which should be used by default for requests to the Data Plane API if an incoming request doesn't specify an API Version.
@@ -47,7 +48,6 @@ variable "blob_properties" {
  `container_delete_retention_policy` block supports the following:
  - `days` - (Optional) Specifies the number of days that the container should be retained, between `1` and `365` days. Defaults to `7`.
  - Set the entire block to `null` to disable container soft delete.
-
 
  ---
  `cors_rule` block supports the following:
@@ -80,6 +80,14 @@ variable "blob_properties" {
  `restore_policy` block supports the following:
  - `days` - (Required) Specifies the number of days that the blob can be restored, between `1` and `365` days. This must be less than the `days` specified for `delete_retention_policy`.
 EOT
+
+  validation {
+    condition = var.blob_properties != null ? (
+      var.blob_properties.delete_retention_policy != null && var.blob_properties.restore_policy != null ?
+      var.blob_properties.delete_retention_policy.permanent_delete_enabled != true : true
+    ) : true
+    error_message = "When restore_policy is defined, delete_retention_policy.permanent_delete_enabled cannot be set to true. Point-in-time restore requires soft delete to be enabled (permanent delete disabled)."
+  }
 }
 
 variable "containers" {
